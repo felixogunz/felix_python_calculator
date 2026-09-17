@@ -1,34 +1,316 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --background: #f4f6f8;
+    --card: #ffffff;
+    --display: #f8fafc;
+    --text: #172033;
+    --secondary-text: #667085;
+    --button: #eef1f5;
+    --button-hover: #e2e6ec;
+    --operator: #e8eefc;
+    --operator-text: #3157a6;
+    --function: #e9ecf1;
+    --equals: #1f2937;
+    --equals-text: #ffffff;
+    --border: #e4e7ec;
+    --shadow: 0 20px 50px rgba(16, 24, 40, 0.10);
+}
+
+body.dark {
+    --background: #101318;
+    --card: #181c23;
+    --display: #11151b;
+    --text: #f5f7fa;
+    --secondary-text: #98a2b3;
+    --button: #242a33;
+    --button-hover: #303743;
+    --operator: #273653;
+    --operator-text: #9bb7ff;
+    --function: #292f38;
+    --equals: #f5f7fa;
+    --equals-text: #111318;
+    --border: #303640;
+    --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
-    max-width: 500px;
-    margin: 50px auto;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+button {
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.app {
+    width: min(1100px, 94%);
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.top-bar h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.top-bar p {
+    color: var(--secondary-text);
+    font-size: 14px;
+}
+
+.icon-button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-size: 20px;
+}
+
+.icon-button:hover {
+    transform: rotate(15deg);
+}
+
+.calculator-layout {
+    display: grid;
+    grid-template-columns: minmax(350px, 1fr) 320px;
+    gap: 25px;
+    align-items: start;
+}
+
+.calculator, 
+.history-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.calculator {
+    padding: 25px;
+}
+
+.display-container {
+    background: var(--display);
+    border: 1px solid var(--border);
+    border-radius: 18px;
     padding: 20px;
-}
-
-h1 {
-    text-align: center;
-}
-
-form {
+    margin-bottom: 18px;
+    min-height: 130px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    justify-content: flex-end;
+    text-align: right;
+    overflow: hidden;
 }
 
-input,
-select,
-button {
-    padding: 12px;
+.expression {
+    color: var(--secondary-text);
     font-size: 16px;
+    min-height: 24px;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
-button {
+.display {
+    font-size: clamp(35px, 7vw, 58px);
+    font-weight: 600;
+    margin-top: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.calculator-controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.calculator-controls button,
+.extra-functions button,
+.scientific-functions button {
+    min-height: 62px;
+    border-radius: 14px;
+    background: var(--button);
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.calculator-controls button:hover,
+.extra-functions button:hover,
+.scientific-functions button:hover {
+    background: var(--button-hover);
+    transform: translate(-1px);
+}
+
+.operator-button {
+    background: var(--operator) !important;
+    color: var(--operator-text) !important;
+    font-size: 24px !important;
+}
+
+.function-button {
+    background: var(--function) !important;
+}
+
+.equals-button {
+    background: var(--equals) !important;
+    color: var(--equals-text) !important;
+    font-size: 25px !important;
+}
+
+.extra-functions,
+.scientific-functions {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.extra-functions button,
+.scientific-functions button{
+    min-height: 50px;
+    font-size: 14px;
+}
+
+.history-panel {
+    padding: 22px;
+    min-height: 500px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.history-header h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.history-header p {
+    color: var(--secondary-text);
+    font-size: 13px;
+}
+
+.clear-history {
+    background: transparent;
+    color: var(--secondary-text);
+    font-size: 13px;
+}
+
+.clear-history:hover {
+    color: var(--text);
+}
+
+.history-list {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-item {
+    background: var(--display);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px;
     cursor: pointer;
 }
 
-.result {
-    margin-top: 20px;
-    padding: 15px;
+.history-item:hover {
+    border-color: var(--secondary-text);
+}
+
+.history-expression {
+    color: var(--secondary-text);
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.history-result {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.empty-history {
+    color: var(--secondary-text);
     text-align: center;
-    font-size: 20px;
+    margin-top: 50px;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 25px;
+    color: var(--secondary-text);
+    font-size: 13px;
+}
+
+
+@media (max-width: 800px) {
+
+    .calculator-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .history-panel {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .app {
+        width: 96%;
+        padding: 15px 0;
+    }
+
+    .calculator {
+        padding: 15px;
+        border-radius: 18px;
+    }
+
+    .calculator-controls {
+        gap: 7px;
+    }
+
+    .calculator-controls button {
+        min-height: 56px;
+        font-size: 16px;
+    }
+
+    .extra-functions,
+    .scientific-functions {
+        gap: 7px;
+    }
+
+    .extra-functions button,
+    .scientific-functions button {
+        min-height: 45px;
+        font-size: 12px;
+    }
 }
